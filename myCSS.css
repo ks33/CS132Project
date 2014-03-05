@@ -1,32 +1,51 @@
 body{
-	background: purple;
+	background: gray;
 }
 
+#content{
+	margin-left: auto;
+	margin-right: auto;
+
+}
 #header{
 	width: 700px;
 	height: 150px;
 	margin-left: auto;
 	margin-right: auto;
+	border: solid black 5px;
+	background: green;
 }
 
 #inner{
 	width: 700px;
 	margin-left: auto;
 	margin-right: auto;
+	border: solid black 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background: green;
 }
 
 #inputs{
 	width: 200px;
 	padding: 10px;
+	border: solid black 5px;
+	display: inline-block;
+	margin: 5px;
 }
 
 #graph{
-	width: 400px;
+	width: 410px;
 	padding: 10px;
+	border: solid black 5px;
+	display: inline-block;
+	margin: 5px;
 }
 
 #predictions{
 	width: 700px;
 	margin-left: auto;
 	margin-right: auto;
+	border: solid black 5px;
+	background: green;
 }
