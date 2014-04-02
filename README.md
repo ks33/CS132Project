@@ -1,11 +1,4 @@
-CS132Project
-============
+spark-server-demo
+======
 
-This is our CS132 Final Project
-
-
-
-
-
-
-
+Basic spark server setup with Maven for dependency resolution. 
