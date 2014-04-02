@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Spark Server Demos</title>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="home.css">
+</head>
+<body>
+	<p>Velocity Templating: ${status}</p>
+	<button id="test-button" type="button">Click Me!</button>
+	<p id="response">Server Response</p>
+	<script src="home.js"></script>
+</body>
+
+</html>
