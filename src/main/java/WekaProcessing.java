@@ -77,7 +77,8 @@ public class WekaProcessing {
 		catch(Exception ex){
 			System.out.println("evaluation exception");
 		}
-		eval.cross
+		eval.crossValidateModel(myClassifier, train, 10, new Random(1));
+        System.out.println(eval.toSummaryString());
 	}
 	
 }
