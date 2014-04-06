@@ -8,7 +8,7 @@ import weka.classifiers.*;
 
 public class WekaProcessing {
 
-	public WekaProcessing(){
+	public WekaProcessing() throws Exception{
 		//Think about giving the location of the file path to
 		//the constructor of this class in some cool
 		//user friendly way like having a button
@@ -78,7 +78,8 @@ public class WekaProcessing {
 			System.out.println("evaluation exception");
 		}
 		eval.crossValidateModel(myClassifier, train, 10, new Random(1));
-        System.out.println(eval.toSummaryString());
+        System.out.println(eval.toSummaryString("\nResults\n==========\n", true));
+        System.out.println("Precision is: " + eval.precision(1));
 	}
 	
 }
