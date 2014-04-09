@@ -1,85 +1,75 @@
 package main.java;
 
 import weka.core.converters.*;
+
+import java.awt.BorderLayout;
 import java.io.*;
+import java.util.Random;
+
 import weka.core.*;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.evaluation.ThresholdCurve;
 import weka.classifiers.*;
+import weka.gui.visualize.PlotData2D;
+import weka.gui.visualize.ThresholdVisualizePanel;
 
 public class WekaProcessing {
-
-	public WekaProcessing() throws Exception{
-		//Think about giving the location of the file path to
-		//the constructor of this class in some cool
-		//user friendly way like having a button
-		//on the home page that lets you upload
-		//a csv file
-		CSVLoader loader = new CSVLoader();
-		try{
-			loader.setSource(new File("Data.csv"));
-		}
-		catch(IOException ex){
-			System.out.println("IO Exception getting data");
-		}
-		Instances data = null;
-		try{
-			data = loader.getDataSet();
-		}
-		catch(IOException ex){
-			System.out.println("IOException with processing data");
-		}
-		
-		ArffSaver saver = new ArffSaver();
-		saver.setInstances(data);
-		File outputAndDestination = null;
-		
-		try{
-			outputAndDestination = new File("outputFile.arff");
-			saver.setFile(outputAndDestination);
-			saver.writeBatch();
-		}
-		
-		catch(IOException ex){
-			System.out.println("IOException output file");
-		}
-
-		BufferedReader br = null;
-		try{
-			br = new BufferedReader(new FileReader("outputFile.arff"));
-		}
-		catch(FileNotFoundException ex){
-			System.out.println("File not found buffered reader");
-		}
-		Instances train = null;
-		try{
-			train = new Instances(br);
-		}
-		catch(IOException ex){
-			System.out.println("IO Exception");
-		}
-		train.setClassIndex(train.numAttributes()-1);
-		try{
-			br.close();
-		}
-		catch(IOException ex){
-			System.out.println("IOException br close");
-		}
-		Classifier myClassifier = new NaiveBayes();
-		try{
-			myClassifier.buildClassifier(train);
-		}
-		catch(Exception ex){
-			System.out.println("buildClassifier exception");
-		}
-		try{
-			Evaluation eval =  new Evaluation(train);
-		}
-		catch(Exception ex){
-			System.out.println("evaluation exception");
-		}
-		eval.crossValidateModel(myClassifier, train, 10, new Random(1));
+    public static void main(String[] args) throws Exception {
+        // load CSV file and convert to Arff file
+        CSVLoader loader = new CSVLoader();
+        loader.setSource(new File("Data.csv"));
+        Instances data = loader.getDataSet();
+        ArffSaver saver = new ArffSaver();
+        saver.setInstances(data);
+        File outputAndDestination = new File("outputFile.arff");
+        saver.setFile(outputAndDestination);
+        saver.writeBatch();
+        BufferedReader br = new BufferedReader(new FileReader("outputFile.arff"));
+        Instances train =  new Instances(br);
+        train.setClassIndex(train.numAttributes()-1);
+        br.close();
+        
+		// train classifier
+        Classifier myClassifier = new NaiveBayes();
+        myClassifier.buildClassifier(train);
+        Evaluation eval =  new Evaluation(train);
+        eval.crossValidateModel(myClassifier, train, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n==========\n", true));
         System.out.println("Precision is: " + eval.precision(1));
-	}
-	
+        
+        // generate curve
+        ThresholdCurve tc = new ThresholdCurve();
+        int classIndex = 0;
+        Instances result = tc.getCurve(eval.predictions(), classIndex);
+        
+        // plot curve
+        ThresholdVisualizePanel vmc = new ThresholdVisualizePanel();
+        vmc.setROCString("(Area under ROC = " +  Utils.doubleToString(tc.getROCArea(result), 4) + ")");
+        vmc.setName(result.relationName());
+        PlotData2D tempd = new PlotData2D(result);
+        tempd.setPlotName(result.relationName());
+        tempd.addInstanceNumberAttribute();
+        // specify which points are connected
+        boolean[] cp = new boolean[result.numInstances()];
+        for (int n = 1; n < cp.length; n++)
+            cp[n] = true;
+        tempd.setConnectPoints(cp);
+        // add plot
+        vmc.addPlot(tempd);
+        
+        // display curve
+        String plotName = vmc.getName();
+        final javax.swing.JFrame jf =
+        new javax.swing.JFrame("Weka Classifier Visualize: "+plotName);
+        jf.setSize(500,400);
+        jf.getContentPane().setLayout(new BorderLayout());
+        jf.getContentPane().add(vmc, BorderLayout.CENTER);
+        jf.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                jf.dispose();
+            }
+        });
+        jf.setVisible(true);
+    }
+    
 }
