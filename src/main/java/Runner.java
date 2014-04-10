@@ -9,13 +9,15 @@ import weka.core.Instance;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 
 
 public class Runner {
 	public static Classifier c;
     
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws JsonSyntaxException, MalformedURLException, IOException {
 		// 1) Change WekaProcessing main function's return type to Classifer, change name?
 		// 2) Make function return classifier
 		// c = (new WekaProcessing()).train()
@@ -28,17 +30,14 @@ public class Runner {
 		//			return an instance of this class to generate a response
 		//	handle in client-side javascript
 		
-        c = (new WekaProcessing()).train();
+        try {
+			c = (new WekaProcessing()).train();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		post(new JsonTransformerRoute("/train") {
-		    @Override
-		    public Object handle(Request request, Response response) {
-		    	Gson gson = new Gson();
-		    	Instance inst = gson.fromJson(request.body(), Instance.class);
-		    	MyResult result = new MyResult(c.classifyInstance(inst));
-		        return result;
-		    }
-        });
+		
 		
 		// TODO Auto-generated method stub
 		get(new Route("/") {
@@ -48,12 +47,12 @@ public class Runner {
             }
         });
 		
-		get(new JsonTransformerRoute("/hello") {
-		    @Override
-		    public Object handle(Request request, Response response) {
-                return new MyMessage("Hello World");
-		    }
-        });
+		/*get(new JsonTransformerRoute("/hello") {
+         @Override
+         public Object handle(Request request, Response response) {
+         return new MyMessage("Hello World");
+         }
+		 });*/
 		
 		get(new VelocityRoute("/hello1") {
             @Override
@@ -64,6 +63,23 @@ public class Runner {
                 // The wm files are located under the resources directory
                 return modelAndView(model, "hello.wm");
             }
+        });
+		
+		get(new JsonTransformerRoute("/hello") {
+		    @Override
+		    public Object handle (Request request, Response response) {
+		    	Gson gson = new Gson();
+		    	Instance inst = gson.fromJson(request.body(), Instance.class);
+		    	MyResult result;
+				try {
+					result = new MyResult(c.classifyInstance(inst));
+					return result;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        return null;
+		    }
         });
 	}
     
