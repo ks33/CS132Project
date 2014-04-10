@@ -14,3 +14,5 @@ public class MyMessage {
 	}
 
 }
+//at some point find out why
+//there are errors on launch with the server

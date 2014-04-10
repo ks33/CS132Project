@@ -1,2 +1,56 @@
 Hello ${hello}!
 Hello ${m.message}!
+
+Hello ${hello}!
+Hello ${m.message}!
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Index Page </title>
+	<script type="text/javascript" src="myJavascript.js"></script>
+	<link href="myCSS.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<form method="post" action="/hello" id="messageForm">
+		<input type="number" name="tenure" id="nicknameField" value="1">
+		<input type="number" name="is30dPayer" id="nicknameField" value="1">
+		<input type="number" name="paymentAmount30d" id="nicknameField" value="1">
+		<input type="number" name="engmtLastWk" id="nicknameField" value="1">
+		<input type="number" name="engmtWk-1" id="nicknameField" value="1">
+		<input type="number" name="engmtWk-2" id="nicknameField" value="1">
+		<input type="number" name="engmtWk-3" id="nicknameField" value="1">
+		<input type="number" name="engmt28d" id="nicknameField" value="1">
+		<input type="number" name="deltaEngmt4wk" id="nicknameField" value="1">
+		<input type="number" name="socialActionsReceivedLastWk" id="nicknameField" value="1">
+		<input type="number" name="socialActorsReceivedLastWk" id="nicknameField" value="1">
+		<input type="number" name="socialActionsSentLastWk" id="nicknameField" value="1">
+		<input type="number" name="socialActorsSentLastWk" id="nicknameField" value="1">
+		<input type="number" name="daysSinceLastSend" id="nicknameField" value="1">
+		<input type="number" name="daysSinceLastReceive" id="nicknameField" value="1">
+		<input type="submit" id="message-submit_button" value="Send">
+	</form>
+<!-- 	<div id="header" class = "content"><p>Title </div>
+	<div id="nav_bar"></div>
+	<div id="inner" class = "content">
+		<div id="inputs" class = "content"> <p>Inputs  
+		<form>
+			Social Actions Received: <input type="text" name="actrec"><br>
+			Social Actions Sent: <input type="text" name="actrec"><br>
+			Engagement Last Week: <input type="text" name="engmntWk1"> <br>
+			Days Since Last Send: <input type="text" name="actrec"><br>
+
+		</form>
+		</div>  
+
+		<div id="graph" class = "content"> <p>Graph  </div> 
+	</div>
+	<div id="predictions" class = "content"> <p>Prediction
+	</div> -->
+</div>
+</body>
+</html>
+
