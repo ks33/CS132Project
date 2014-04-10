@@ -31,7 +31,7 @@ public class Runner {
 		//	handle in client-side javascript
 		
         try {
-            //			c = (new WekaProcessing()).train();
+			c = (new WekaProcessing()).train();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,17 +65,11 @@ public class Runner {
             }
         });
 		
-		post(new JsonTransformerRoute("/hello") {
+		get(new JsonTransformerRoute("/hello") {
 		    @Override
 		    public Object handle (Request request, Response response) {
 		    	Gson gson = new Gson();
-		    	if (true){
-		    		return "HELLO WORLD1!";
-		    	}
 		    	Instance inst = gson.fromJson(request.body(), Instance.class);
-		    	if (true){
-		    		return "HELLO WORLD2!";
-		    	}
 		    	MyResult result;
 				try {
 					result = new MyResult(c.classifyInstance(inst));
@@ -90,4 +84,3 @@ public class Runner {
 	}
     
 }
-
