@@ -3,13 +3,20 @@ package main.java;
 import static spark.Spark.*;
 import spark.*;
 import spark.template.velocity.VelocityRoute;
+import weka.classifiers.Classifier;
+import weka.core.Instance;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import java.util.*;
 
 
 public class Runner {
-
-	public static void main(String[] args) {
-        // 1) Change WekaProcessing main function's return type to Classifer, change name?
+	public static Classifier c;
+    
+	public static void main(String[] args) throws Exception {
+		// 1) Change WekaProcessing main function's return type to Classifer, change name?
 		// 2) Make function return classifier
 		// c = (new WekaProcessing()).train()
 		// 3) create a new POST route (JsonTransformer)
@@ -21,29 +28,32 @@ public class Runner {
 		//			return an instance of this class to generate a response
 		//	handle in client-side javascript
 		
-		c = (new WekaProcessing()).train();
+        c = (new WekaProcessing()).train();
 		
 		post(new JsonTransformerRoute("/train") {
 		    @Override
 		    public Object handle(Request request, Response response) {
-		    	
-                return ;
+		    	Gson gson = new Gson();
+		    	Instance inst = gson.fromJson(request.body(), Instance.class);
+		    	MyResult result = new MyResult(c.classifyInstance(inst));
+		        return result;
 		    }
         });
+		
 		// TODO Auto-generated method stub
 		get(new Route("/") {
-	         @Override
-	         public Object handle(Request request, Response response) {
+            @Override
+            public Object handle(Request request, Response response) {
 	            return "Hello World!";
-	         }
-	      });
+            }
+        });
 		
 		get(new JsonTransformerRoute("/hello") {
 		    @Override
 		    public Object handle(Request request, Response response) {
-		       return new MyMessage("Hello World");
+                return new MyMessage("Hello World");
 		    }
-		 });
+        });
 		
 		get(new VelocityRoute("/hello1") {
             @Override
@@ -56,5 +66,5 @@ public class Runner {
             }
         });
 	}
-
+    
 }
