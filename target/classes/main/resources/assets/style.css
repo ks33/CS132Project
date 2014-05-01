@@ -1,0 +1,60 @@
+body{
+	background: #A4C484;
+	padding: 20px;
+	font-family: "Arial";
+}
+
+#inputs{
+	width: 750px;
+	background: #E0D6CC;
+	padding: 10px;
+	font-size: 16px;
+	margin: auto;
+
+}
+
+#header{
+	width: 750px;
+	height: 100px;
+	color: #E0D6CC;
+	background: black;
+	margin: auto;
+	margin-bottom: 0;
+	text-align: center;
+	padding: 10px;
+}
+
+#form{
+	text-align: center;
+	font-size: 14px;
+}
+
+#response{
+	font-size: 18px;
+	text-align: center;
+}
+
+form {
+	margin: 0 auto;
+}
+
+label, input {
+	display: inline-block;
+}
+
+label {
+	width: 30%;
+	text-align: right;
+}
+
+label + input {
+	width: 30%;
+	margin: 0 30% 0 4%;
+}
+
+
+input[type=submit] {
+	border: 1px dotted #999;
+	border-radius: .2;
+	font-size: 20px;
+}

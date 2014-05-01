@@ -1,0 +1,83 @@
+Hello ${hello}!
+Hello ${m.message}!
+
+Hello ${hello}!
+Hello ${m.message}!
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Index Page </title>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+		window.addEventListener('load', function(){
+			console.log("loaded");
+			$('#messageForm').on('submit',function (e) {
+				e.preventDefault();
+				var formData = {"tenure": $('#tenure').val(), "is30dPayer": $('#ts30dPayer').val(), "paymentAmount30d": $('#paymentAmount30d').val(),"engmtLastWk": $('#engmtLastWk').val(), "engmtWk-1": $('#engmtWk-1').val(), "engmtWk-2": $('#engmtWk-2').val(), "engmtWk-3": $('#engmtWk-3').val(), "engmt28d": $('#engmt28d').val(), "deltaEngmt4wk": $('#deltaEngmt4wk').val(), "socialActionsReceivedLastWk": $('#socialActionsReceivedLastWk').val(), "socialActorsReceivedLastWk": $('#socialActorsReceivedLastWk').val(), "socialActionsSentLastWk": $('#socialActionsSentLastWk').val(), "socialActorsSentLastWk": $('#socialActorsSentLastWk').val(), "daysSinceLastSend": $('#daysSinceLastSend').val(), "daysSinceLastReceive": $('#daysSinceLastReceive').val()}
+				var formJson = JSON.stringify(formData);
+				console.log(formJson);
+			    $.ajax({
+				  type: "POST",
+				  url: "/hello",
+				  data: formJson,
+				  success: function(){},
+				  dataType: "json",
+				  contentType : "application/json"
+				});
+			});
+		}, false);
+		
+		
+		
+		
+	</script>
+	
+	
+</head>
+
+<body>
+
+	<form method="post" action="/hello" id="messageForm" enctype='application/json'>
+		<input type="number" id="tenure" name="tenure" value="1">
+		<input type="number" id="is30dPayer" name="is30dPayer" value="2">
+		<input type="number" id="paymentAmount30d" name="paymentAmount30d" value="3">
+		<input type="number" id="engmtLastWk" name="engmtLastWk" value="4">
+		<input type="number" id="engmtWk-1" name="engmtWk-1" value="5">
+		<input type="number" id="engmtWk-2" name="engmtWk-2" value="6">
+		<input type="number" id="engmtWk-3" name="engmtWk-3" value="1">
+		<input type="number" id="engmt28d" name="engmt28d" value="1">
+		<input type="number" id="deltaEngmt4wk" name="deltaEngmt4wk" value="1">
+		<input type="number" id="socialActionsReceivedLastWk" name="socialActionsReceivedLastWk" value="1">
+		<input type="number" id="socialActorsReceivedLastWk" name="socialActorsReceivedLastWk"  value="1">
+		<input type="number" id="socialActionsSentLastWk" name="socialActionsSentLastWk"  value="1">
+		<input type="number" id="socialActorsSentLastWk" name="socialActorsSentLastWk"  value="1">
+		<input type="number" id="daysSinceLastSend" name="daysSinceLastSend"  value="1">
+		<input type="number" id="daysSinceLastReceive" name="daysSinceLastReceive"  value="1">
+		<input type="submit" id="message-submit_button" value="Send">
+	</form>
+<!-- 	<div id="header" class = "content"><p>Title </div>
+	<div id="nav_bar"></div>
+	<div id="inner" class = "content">
+		<div id="inputs" class = "content"> <p>Inputs  
+		<form>
+			Social Actions Received: <input type="text" name="actrec"><br>
+			Social Actions Sent: <input type="text" name="actrec"><br>
+			Engagement Last Week: <input type="text" name="engmntWk1"> <br>
+			Days Since Last Send: <input type="text" name="actrec"><br>
+
+		</form>
+		</div>  
+
+		<div id="graph" class = "content"> <p>Graph  </div> 
+	</div>
+	<div id="predictions" class = "content"> <p>Prediction
+	</div> -->
+</div>
+</body>
+</html>
+
+
+

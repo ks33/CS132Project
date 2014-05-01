@@ -1,2 +1,83 @@
-Hello ${hello}!
-Hello ${m.message}!
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Index Page </title>
+	
+
+	<link href="style.css" rel="stylesheet">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+
+	window.addEventListener('load', function(){
+		console.log("loaded");
+		$('#messageForm').on('submit',function (e) {
+			
+			e.preventDefault();
+			var formData = {
+						#foreach ($token in $tokens)
+				"$token": $('#$token').val(),
+			#end
+			}
+			
+			var formJson = JSON.stringify(formData);
+			console.log(formJson);
+			$.ajax({
+				type: "POST",
+				url: "/hello",
+				data: formJson,
+				success: function(data){ 
+				$("#response").text(data.message);
+				},
+					dataType: "json",
+					contentType : "application/json"
+				});
+
+
+		}
+		);
+}, false);
+
+
+
+
+</script>
+</head>
+
+
+
+<body>
+
+	<div id = "header">
+		
+		<h1> Zynga Game Player Lapse Predictor</h1>
+	</div>
+	<div id = "inputs">
+
+		<h4>To receive a prediction of whether a user will lapse or not, provide the following information. <br> All field inputs are numbers.</h4>
+
+		<div id = "form">
+
+			<form method="post" action="/hello" id="messageForm" enctype='application/json'>
+			#foreach ($token in $tokens)
+				<label for = "$token"> $token: </label>
+				<input type = "number" id ="$token" name="$token" value=""> <br>
+			#end
+				<br>
+				<input type="submit" id="message-submit_button" value="Submit Data">
+			</form>
+
+		</div>
+		<h3> Results: </h3> <br>
+		<p id="response"></p>
+
+	</div>
+
+</body>
+</html>
+
+
+

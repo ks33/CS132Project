@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Index Page </title>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+$.fn.dataTableExt.afnFiltering.push(
+    function( oSettings, aData, iDataIndex ) {
+        var iMin = document.getElementById('min').value * 1;
+        var iMax = document.getElementById('max').value * 1;
+        var iVersion = aData[0] == "-" ? 0 : aData[0]*1;
+        if ( iMin == "" && iMax == "" )
+        {
+            return true;
+        }
+        else if ( iMin == "" && iVersion <= iMax )
+        {
+            return true;
+        }
+        else if ( iMin <= iVersion && "" == iMax )
+        {
+            return true;
+        }
+        else if ( iMin <= iVersion && iVersion <= iMax )
+        {
+            return true;
+        }
+        return false;
+    }
+);
+ var oTable;
+
+ $(document).ready(function() {
+ $('#form').submit( function() {
+		var sData = $('input', oTable.fnGetNodes()).serialize();
+		var regex = new RegExp('%2C','g');
+		sData = sData.replace(regex,",");
+		regex = new RegExp('a=','g');
+		sData = sData.replace(regex,"");
+		alert( "The following data would have been submitted to the server: \n\n"+sData );
+		return false;
+	} );
+        oTable = $('#example').dataTable();
+		 $('#min').keyup( function() { oTable.fnDraw(); } );
+    $('#max').keyup( function() { oTable.fnDraw(); } );
+    } );
+</script>
+	
+</head>
+
+<body>
+First name: <input type="text" id="min" value=""><br>
+Last name: <input type="text" id="max" value=""><br>
+<form id ="form">
+
+<table border = "1" style ="width:300px" id = "example">
+<thead>
+<tr>
+#foreach ($field in $Fields)
+			<td>$field</td>
+#end
+<td>checkbox</td>
+</tr>
+</thead>
+<tbody>
+#foreach($value in $Values)
+<tr>
+#foreach($elem in $value)
+<td>$elem</td>
+#end
+<td> <input type="checkbox" name="a" value="#foreach($item in $value)$item,#end" /> 
+</tr>
+#end
+</tbody>
+</table>
+  <input type="submit" id="message-submit_button" value="Submit Data">
+  </form>
+</body>
+</html>

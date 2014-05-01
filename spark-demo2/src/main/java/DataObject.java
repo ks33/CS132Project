@@ -1,34 +1,34 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DataObject {
-
-	private int tenure;
-
+	
+	private HashMap<String, String> data = new HashMap<>();
 	private List<String> list ;
-
-	public DataObject(int tenure) {
-
-		this.tenure = tenure;
-
-		this.list = new ArrayList<String>();
-		this.list.add("Int1");
-
+	
+	public DataObject(String body)
+	{
+		String realString = body.substring(1, body.length()-2);
+		System.out.println(realString);
+		String[] tokens = realString.split(",");
+		for (String elem : tokens)
+		{
+			try{
+				String[] pair = elem.replace("\"", "").split(":");
+				System.out.println("PAIR:" + pair[0]+ " " + pair[1]);
+				data.put(pair[0], pair[1]);
+			}catch(Exception e){
+				
+			}
+			
+		}
 	}
 
-	public void settenure(int tenure) {
-		this.tenure = tenure;
-	}
-
-	public int gettenure() {
-		return this.tenure;
-	}
-
-	@Override
-	public String toString() {
-		return new StringBuffer(" First Name : ").append(" tenure : ")
-				.append(this.tenure).append(" "+this.list).toString();
+	public String getData(String key)
+	{
+		return data.get(key);
 	}
 }

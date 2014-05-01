@@ -16,5 +16,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/Home/Desktop/brown_cs/cs132/CS132Project/lib/opencsv-1.7.jar"/>
+	<classpathentry kind="lib" path="/Users/Home/Desktop/brown_cs/cs132/CS132Project/lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

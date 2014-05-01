@@ -1,56 +1,87 @@
-Hello ${hello}!
-Hello ${m.message}!
 
-Hello ${hello}!
-Hello ${m.message}!
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title> Index Page </title>
-	<script type="text/javascript" src="myJavascript.js"></script>
-	<link href="myCSS.css" rel="stylesheet">
+	
+
+	<link href="style.css" rel="stylesheet">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+
+	window.addEventListener('load', function(){
+		console.log("loaded");
+		$('#messageForm').on('submit',function (e) {
+			
+			e.preventDefault();
+			var formData = {
+						#foreach ($token in $tokens)
+				"$token": $('#$token').val(),
+			#end
+			}
+			
+			var formJson = JSON.stringify(formData);
+			console.log(formJson);
+			$.ajax({
+				type: "POST",
+				url: "/hello",
+				data: formJson,
+				success: function(data){ 
+					if(data.message == 1.0)
+						$("#response").text("This user is predicted to be a lapser. This data indicates that they will most likely stop playing the game.");
+					else
+						$("#response").text("This person is predicted to be a non-lapser. Their data indicates that they will continue to play the game.");},
+					dataType: "json",
+					contentType : "application/json"
+				});
+
+
+		}
+		);
+}, false);
+
+
+
+
+</script>
 </head>
+
+
 
 <body>
 
-	<form method="post" action="/hello" id="messageForm">
-		<input type="number" name="tenure" id="nicknameField" value="1">
-		<input type="number" name="is30dPayer" id="nicknameField" value="1">
-		<input type="number" name="paymentAmount30d" id="nicknameField" value="1">
-		<input type="number" name="engmtLastWk" id="nicknameField" value="1">
-		<input type="number" name="engmtWk-1" id="nicknameField" value="1">
-		<input type="number" name="engmtWk-2" id="nicknameField" value="1">
-		<input type="number" name="engmtWk-3" id="nicknameField" value="1">
-		<input type="number" name="engmt28d" id="nicknameField" value="1">
-		<input type="number" name="deltaEngmt4wk" id="nicknameField" value="1">
-		<input type="number" name="socialActionsReceivedLastWk" id="nicknameField" value="1">
-		<input type="number" name="socialActorsReceivedLastWk" id="nicknameField" value="1">
-		<input type="number" name="socialActionsSentLastWk" id="nicknameField" value="1">
-		<input type="number" name="socialActorsSentLastWk" id="nicknameField" value="1">
-		<input type="number" name="daysSinceLastSend" id="nicknameField" value="1">
-		<input type="number" name="daysSinceLastReceive" id="nicknameField" value="1">
-		<input type="submit" id="message-submit_button" value="Send">
-	</form>
-<!-- 	<div id="header" class = "content"><p>Title </div>
-	<div id="nav_bar"></div>
-	<div id="inner" class = "content">
-		<div id="inputs" class = "content"> <p>Inputs  
-		<form>
-			Social Actions Received: <input type="text" name="actrec"><br>
-			Social Actions Sent: <input type="text" name="actrec"><br>
-			Engagement Last Week: <input type="text" name="engmntWk1"> <br>
-			Days Since Last Send: <input type="text" name="actrec"><br>
-
-		</form>
-		</div>  
-
-		<div id="graph" class = "content"> <p>Graph  </div> 
+	<div id = "header">
+		
+		<h1> Zynga Game Player Lapse Predictor</h1>
 	</div>
-	<div id="predictions" class = "content"> <p>Prediction
-	</div> -->
-</div>
+	<div id = "inputs">
+
+		<h4>To receive a prediction of whether a user will lapse or not, provide the following information. <br> All field inputs are numbers.</h4>
+
+		<div id = "form">
+
+			<form method="post" action="/hello" id="messageForm" enctype='application/json'>
+			#foreach ($token in $tokens)
+				<label for = "$token"> $token: </label>
+				<input type = "number" id ="$token" name="$token" value=""> <br>
+			#end
+				<br>
+				<input type="submit" id="message-submit_button" value="Submit Data">
+			</form>
+
+		</div>
+
+		<br>
+		<h3> Results: </h3> <br>
+		<p id="response"></p>
+
+	</div>
+
 </body>
 </html>
+
+
 
